@@ -210,6 +210,7 @@ fun handleExceptionContinuation(x: (Throwable) -> Unit): Continuation<Any?> = ob
         createOutputDirectory()
         def program = buildExePath()
         def targetManager = new TargetManager(project.testTarget)
+        def target = targetManager.target
         def suffix = targetManager.programSuffix
         def exe = "$program$suffix"
 
@@ -224,7 +225,11 @@ fun handleExceptionContinuation(x: (Throwable) -> Unit): Continuation<Any?> = ob
         def out = new ByteArrayOutputStream()
         //TODO Add test timeout
         ExecResult execResult = project.execRemote {
-            commandLine exe
+            if (target == KonanTarget.WASM32) {
+                commandLine '/Users/jetbrains/Downloads/d8', '--expose-wasm', '/Users/jetbrains/the_wasm.js', '--', exe
+            } else {
+                commandLine exe
+            }
             if (arguments != null) {
                 args arguments
             }
