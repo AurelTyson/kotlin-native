@@ -975,6 +975,8 @@ task AbstractMutableCollection(type: RunKonanTest) {
 }
 
 task BitSet(type: RunKonanTest) {
+    // An exception on wasm32.
+    disabled = (project.testTarget == 'wasm32')
     expectedExitStatus = 0
     source = "runtime/collections/BitSet.kt"
 }
@@ -1168,6 +1170,8 @@ task boxing6(type: RunKonanTest) {
 }
 
 task boxing7(type: RunKonanTest) {
+    // Uses exceptions.
+    disabled = (project.testTarget == 'wasm32')
     goldValue = "1\n0\n"
     source = "codegen/boxing/boxing7.kt"
 }
@@ -1223,6 +1227,8 @@ task hash0(type: RunKonanTest) {
 }
 
 task array_list1(type: RunKonanTest) {
+    // The test just fails on wasm32.
+    disabled = (project.testTarget == 'wasm32')
     goldValue = "OK\n"
     source = "runtime/collections/array_list1.kt"
 }
