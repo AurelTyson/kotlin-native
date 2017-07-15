@@ -241,6 +241,11 @@ fun handleExceptionContinuation(x: (Throwable) -> Unit): Continuation<Any?> = ob
             ignoreExitValue = true
         }
         def result = out.toString("UTF-8")
+        if (target == KonanTarget.WASM32) {
+            // TODO: remove this hack.
+            // Trim the trailing newline, since I can't do that in js now.
+            result = result.substring(0, result.length() - 1)
+        }
         println(result)
 
         if (execResult.exitValue != expectedExitStatus) {
